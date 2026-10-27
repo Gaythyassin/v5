@@ -499,3 +499,7 @@ Two bugs that this test found and that are fixed in v5:
 2. A single invalid UTF-8 byte made `Files.newBufferedReader` throw and **abort the whole
    run**. The source now decodes with replacement characters so the error stays a
    one-record problem.
+
+### Eklenen kullanıcı kaos veri seti
+
+`data/fixture/access-dirty.log` ve `data/fixture/access-empty.log` kullanıcının gönderdiği dosyalardır; önceki kaos veri seti korunmuştur. `configs/fixture-chaos.yaml` ile çalıştırılır. İlk açıklama satırı geçerli log olmadığı için parse / DEAD_LETTER ile işlenir. Sonuç 11 girdi = 3 geçerli + 8 dead-letter. Kesik satırlar, geçersiz UTF-8 ve 100 KiB satır parse / DEAD_LETTER; negatif bayt ve 1970/2099 tarihleri validate / DEAD_LETTER olarak yönlendirilir. Boş dosya sıfır kayıtla tamamlanır.

@@ -17,3 +17,16 @@ Get-Content .\out\chaos-summary.json
 ```
 
 Testler Maven kuruluysa `mvn test` ile çalıştırılabilir. Windows derlemesinde UTF-8 kullanılır. Proje ve hata politikalarının ayrıntıları README.md ve ARCHITECTURE.md dosyalarındadır.
+
+## Gönderilen ek bozuk veri dosyası
+
+Gönderdiğiniz ZIP, `data/fixture/` klasöründe korunmuştur. Çalıştırmak için:
+
+```powershell
+.\logflow.bat --config configs\fixture-chaos.yaml
+Get-Content .\out\fixture-clean.txt
+Get-Content .\out\fixture-dead-letter.jsonl
+Get-Content .\out\fixture-summary.json
+```
+
+Sonuç: 11 satır = 3 geçerli kayıt + 8 dead-letter. İlk satır log değil bir açıklama olduğu için dead-letter kanalına gider. Boş dosya `data/fixture/access-empty.log` otomatik testte ayrıca kontrol edilir. Mevcut 28 satırlık kaos örneği ve `configs/chaos.yaml` korunmuştur.
