@@ -1,0 +1,21 @@
+# Hata raporu: 4xx/5xx yanıtların zamanı, istemcisi, durumu ve yolu.
+pipeline:
+  name: error-report
+
+  source:
+    type: file
+    params: { path: data/access-small.log }
+
+  stages:
+    - type: parse
+      params: { format: clf }
+
+    - type: filter
+      params: { field: status, op: ">=", value: 400 }
+
+    - type: project
+      params: { fields: [timestamp, clientIp, status, path] }
+
+  sink:
+    type: file
+    params: { path: out/errors.txt }

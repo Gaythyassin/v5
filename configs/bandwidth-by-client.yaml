@@ -1,0 +1,21 @@
+# İstemci bazında bant genişliği: başarılı yanıtlarda gönderilen bayt, en çok kullanan 10 istemci.
+# data/access-clients.log kullanılır: access-small.log içinde her IP yalnızca bir kez geçer.
+pipeline:
+  name: bandwidth-by-client
+
+  source:
+    type: file
+    params: { path: data/access-clients.log }
+
+  stages:
+    - type: parse
+
+    - type: filter
+      params: { field: status, op: "<", value: 400 }
+
+    - type: aggregate
+      params: { groupBy: clientIp, sum: bytes, top: 10 }
+
+  sink:
+    type: file
+    params: { path: out/bandwidth-by-client.csv, format: csv }

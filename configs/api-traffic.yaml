@@ -1,0 +1,23 @@
+# API trafiği: /api altındaki bütün istekler, CSV olarak (istemci IP'si bilerek dışarıda bırakıldı).
+pipeline:
+  name: api-traffic
+  description: every request under /api, without personal data
+
+  source:
+    type: file
+    params: { path: data/access-small.log }
+
+  stages:
+    - type: parse
+
+    - type: filter
+      params: { field: path, op: startsWith, value: /api }
+
+    - type: project
+      params: { fields: [timestamp, method, path, status, bytes] }
+
+  sink:
+    type: file
+    params:
+      path: out/api-traffic.csv
+      format: csv

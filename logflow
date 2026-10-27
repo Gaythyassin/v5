@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# Kullanım: ./logflow --config configs/error-report.yaml
+# Kaynakları build/classes altına derler ve çalıştırır. Göreli yollar (config, data, out)
+# komutun çalıştırıldığı dizine göre çözülür.
+set -e
+DIR=$(cd "$(dirname "$0")" && pwd)
+CLASSES="$DIR/build/classes"
+mkdir -p "$CLASSES"
+(cd "$DIR/src/main/java" && javac -encoding UTF-8 -d "$CLASSES" logflow/*.java logflow/config/*.java logflow/plugins/*.java)
+cp -R "$DIR/src/main/resources/." "$CLASSES/"
+exec java -cp "$CLASSES" logflow.Main "$@"

@@ -1,0 +1,9 @@
+# Hatalı: filter, parse'tan önce geliyor (String üzerinde LogRecord filtresi).
+pipeline:
+  name: broken-wrong-order
+  source: { type: file, params: { path: data/access-small.log } }
+  stages:
+    - type: filter
+      params: { field: status, op: ">=", value: 400 }
+    - type: parse
+  sink: { type: console }

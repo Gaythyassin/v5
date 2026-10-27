@@ -1,0 +1,11 @@
+# Hatalı: 'value' metin (sayı olmalı), 'fields' liste değil, 'path' sayı (metin olmalı).
+pipeline:
+  name: broken-wrong-type
+  source: { type: file, params: { path: data/access-small.log } }
+  stages:
+    - type: parse
+    - type: filter
+      params: { field: status, op: ">=", value: "abc" }
+    - type: project
+      params: { fields: clientIp }
+  sink: { type: file, params: { path: 42 } }

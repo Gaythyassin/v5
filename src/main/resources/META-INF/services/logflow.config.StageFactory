@@ -1,0 +1,6 @@
+# Yeni bir aşama eklemek için: StageFactory uygulayan sınıfı yazın ve adını buraya ekleyin.
+logflow.plugins.ParseStageFactory
+logflow.plugins.FilterStageFactory
+logflow.plugins.ProjectStageFactory
+logflow.plugins.AggregateStageFactory
+logflow.plugins.ValidateStageFactory

@@ -1,0 +1,35 @@
+# Kaos testi: bilerek bozulmuş dosya. Çalıştırma tamamlanmalı; geçerli kayıtlar ana hedefe,
+# hatalı kayıtlar dead-letter hedefine gider ve özet sayıları birbirini tutar.
+pipeline:
+  name: chaos
+  onError: FAIL_FAST            # kendi politikası olmayan aşamada hata = beklenmedik, dur
+  summary: out/chaos-summary.json
+
+  source:
+    type: file
+    params: { path: data/access-dirty.log }
+
+  stages:
+    - type: parse
+      onError: DEAD_LETTER      # sözdizimi: kesik, boş, UTF-8 olmayan, çok uzun satır, geçersiz tarih
+      params: { maxLineLength: 8192 }
+
+    - type: validate
+      onError: DEAD_LETTER      # anlam: negatif bayt, 1970/2099, geçersiz IP/durum/metot
+      params:
+        required: [clientIp, method, path, protocol]
+        ranges: { status: [100, 599], bytes: [0, 104857600] }
+        timestamp: { notBefore: "2000-01-01T00:00:00Z", notAfter: "2030-12-31T23:59:59Z" }
+        ip: any
+        methods: [GET, POST, PUT, DELETE, HEAD, PATCH, OPTIONS]
+
+    - type: project
+      params: { fields: [timestamp, clientIp, method, path, status, bytes] }
+
+  sink:
+    type: file
+    params: { path: out/chaos-clean.txt }
+
+  deadLetter:
+    type: file
+    params: { path: out/dead-letter.jsonl, format: json }

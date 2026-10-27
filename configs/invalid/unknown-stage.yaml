@@ -1,0 +1,9 @@
+# Hatalı: 'filtr' diye bir aşama yok.
+pipeline:
+  name: broken-unknown-stage
+  source: { type: file, params: { path: data/access-small.log } }
+  stages:
+    - type: parse
+    - type: filtr
+      params: { field: status, op: ">=", value: 400 }
+  sink: { type: console }

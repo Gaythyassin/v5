@@ -1,0 +1,2 @@
+logflow.plugins.FileSinkFactory
+logflow.plugins.ConsoleSinkFactory

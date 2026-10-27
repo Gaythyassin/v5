@@ -1,0 +1,11 @@
+# Hatalı: bilinmeyen politika yazımı ve dead-letter hedefi olmadan DEAD_LETTER.
+pipeline:
+  name: broken-policy
+  source: { type: file, params: { path: data/access-small.log } }
+  stages:
+    - type: parse
+      onError: DEAD-LETTER
+    - type: validate
+      onError: DEAD_LETTER
+      params: { ranges: { status: [100, 599] } }
+  sink: { type: console }

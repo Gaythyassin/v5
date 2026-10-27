@@ -1,0 +1,10 @@
+# Hatalı: filter aşamasında 'value' eksik, project aşamasında 'fields' eksik.
+pipeline:
+  name: broken-missing-param
+  source: { type: file, params: { path: data/access-small.log } }
+  stages:
+    - type: parse
+    - type: filter
+      params: { field: status, op: ">=" }
+    - type: project
+  sink: { type: console }

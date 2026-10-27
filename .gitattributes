@@ -1,0 +1,3 @@
+# Kaos testi verisi baytı baytına korunmalı (satır sonu dönüşümü yok)
+data/access-dirty.log binary
+data/access-empty.log binary

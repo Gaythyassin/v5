@@ -1,0 +1,6 @@
+# Hatalı: aşama yok.
+pipeline:
+  name: broken-empty
+  source: { type: file, params: { path: data/access-small.log } }
+  stages: []
+  sink: { type: console }
